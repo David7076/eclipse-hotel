@@ -1,0 +1,8 @@
+Minha sugestão de melhoria no modelo de dados, focada em agregar VALOR ao cliente,
+seria a inclusão de uma nova entidade ou tabela para Pagamentos (payments).
+O modelo atual é ótimo para gerenciar datas e status, mas um sistema de reservas de hotel de alto valor precisa ir além.
+Um hotel requer visibilidade financeira completa: rastrear quanto, como e quando o dinheiro foi recebido.
+Sem essa tabela, não é possível gerar relatórios precisos de receita por método de pagamento, nem gerenciar cenários
+comuns, como pré-pagamentos ou parcelamentos (onde uma reserva tem múltiplas transações).
+A tabela payments transformaria o sistema de um simples agendador para uma verdadeira plataforma transacional,
+fornecendo ao hotel o histórico auditável de que eles precisam para reconciliação bancária, estornos e conformidade.
