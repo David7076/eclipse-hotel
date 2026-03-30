@@ -32,6 +32,7 @@ public class ReservationServiceImpl implements IReservationService {
         this.roomsRepository = roomsRepository;
     }
 
+    @Override
     public ReservationResponseDTO saveReservation(ReservationRequestDTO dto) {
         if (dto.checkin().isAfter(dto.checkout()) || dto.checkin().isEqual(dto.checkout()))
             throw new IllegalArgumentException("A data de check-in deve ser anterior à data de check-out.");

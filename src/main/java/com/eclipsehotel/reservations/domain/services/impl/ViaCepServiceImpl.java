@@ -15,8 +15,8 @@ public class ViaCepServiceImpl implements IViaCep {
 
     private final WebClient webClient;
 
-
-    public ViaCepResponseDTO consultarCep(String cep) {
+    @Override
+    public ViaCepResponseDTO getCep(String cep) {
 
         return webClient
                 .get()
