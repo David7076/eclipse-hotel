@@ -13,6 +13,7 @@ import com.eclipsehotel.reservations.infra.repository.CustomersRepository;
 import com.eclipsehotel.reservations.infra.repository.ReservationRepository;
 import com.eclipsehotel.reservations.infra.repository.RoomsRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ public class ReservationServiceImpl implements IReservationService {
     }
 
     @Override
+    @Transactional
     public ReservationResponseDTO saveReservation(ReservationRequestDTO dto) {
         if (dto.checkin().isAfter(dto.checkout()) || dto.checkin().isEqual(dto.checkout()))
             throw new IllegalArgumentException("A data de check-in deve ser anterior à data de check-out.");
@@ -66,6 +68,7 @@ public class ReservationServiceImpl implements IReservationService {
 
     }
 
+    @Transactional
     public ReservationResponseDTO checkout(Long id) {
         var reservation = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Reserva não encontrada"));
