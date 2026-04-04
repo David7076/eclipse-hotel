@@ -26,7 +26,6 @@ public class RoomsController {
     }
 
     @PostMapping("/create")
-    @Transactional
     public ResponseEntity<RoomsResponseDTO> createCustomers(
             @RequestBody @Valid RoomsRequestDTO dto,
             UriComponentsBuilder uriBuilder)
@@ -48,7 +47,6 @@ public class RoomsController {
     }
 
     @PutMapping("/updateRoom/{id}")
-    @Transactional
     public ResponseEntity<RoomsResponseDTO> updateRoom(
             @RequestBody
             @Valid RoomsUpdateRequestDTO dto,
