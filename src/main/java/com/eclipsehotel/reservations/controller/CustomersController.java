@@ -1,10 +1,10 @@
 package com.eclipsehotel.reservations.controller;
 
+import com.eclipsehotel.reservations.domain.services.ICustomerService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +27,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/customers")
 public class CustomersController {
 
-    private final CustomersServiceImpl service;
+    private final ICustomerService service;
 
     public CustomersController(CustomersServiceImpl service) {
         this.service = service;
