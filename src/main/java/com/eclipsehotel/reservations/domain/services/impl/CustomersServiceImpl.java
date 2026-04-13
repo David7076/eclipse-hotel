@@ -1,7 +1,6 @@
 package com.eclipsehotel.reservations.domain.services.impl;
 
-import java.util.NoSuchElementException;
-
+import com.eclipsehotel.reservations.infra.exceptions.EntityNotFoundExcetpion;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +21,6 @@ import com.eclipsehotel.reservations.infra.repository.CustomersRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Service
@@ -63,7 +61,7 @@ public class CustomersServiceImpl implements ICustomerService {
 
     @Override
     public CustomerResponseDetailDTO getByIdCustomer(@PathVariable Long id) {
-        var entity = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Cliente não encontrado"));
+        var entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundExcetpion("Cliente não encontrado"));
         return new CustomerResponseDetailDTO(
                 entity.getName(),
                 entity.getEmail(),
@@ -74,7 +72,7 @@ public class CustomersServiceImpl implements ICustomerService {
     @Override
     @Transactional
     public CustomersResponseDTO update(CustomerUpdateRequestDTO dto, Long id) {
-        var entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
+        var entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundExcetpion("Cliente não encontrado"));
 
         var entityUpdated = updateCustomer(dto, entity);
 
