@@ -1,8 +1,8 @@
 package com.eclipsehotel.reservations.domain.mapper;
 
-import com.eclipsehotel.reservations.controller.dto.rooms.RoomsRequestDTO;
-import com.eclipsehotel.reservations.controller.dto.rooms.RoomsUpdateRequestDTO;
-import com.eclipsehotel.reservations.controller.dto.rooms.RoomsResponseDTO;
+import com.eclipsehotel.reservations.controller.dto.room.RoomsRequestDTO;
+import com.eclipsehotel.reservations.controller.dto.room.RoomsUpdateRequestDTO;
+import com.eclipsehotel.reservations.controller.dto.room.RoomsResponseDTO;
 import com.eclipsehotel.reservations.domain.models.RoomsEntity;
 
 public class RoomsMapper {

@@ -4,7 +4,7 @@ package com.eclipsehotel.reservations.domain.services.impl;
 import com.eclipsehotel.reservations.controller.dto.reservation.DateRequestDTO;
 import com.eclipsehotel.reservations.controller.dto.reservation.ReservationRequestDTO;
 import com.eclipsehotel.reservations.controller.dto.reservation.ReservationResponseDTO;
-import com.eclipsehotel.reservations.controller.dto.rooms.RoomDetailResponseDTO;
+import com.eclipsehotel.reservations.controller.dto.room.RoomDetailResponseDTO;
 import com.eclipsehotel.reservations.domain.models.ReservationsEntity;
 import com.eclipsehotel.reservations.domain.models.enums.ReservationStatus;
 import com.eclipsehotel.reservations.domain.mapper.ReservationMapper;

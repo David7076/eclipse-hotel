@@ -3,7 +3,7 @@ package com.eclipsehotel.reservations.domain.services;
 import com.eclipsehotel.reservations.controller.dto.reservation.DateRequestDTO;
 import com.eclipsehotel.reservations.controller.dto.reservation.ReservationRequestDTO;
 import com.eclipsehotel.reservations.controller.dto.reservation.ReservationResponseDTO;
-import com.eclipsehotel.reservations.controller.dto.rooms.RoomDetailResponseDTO;
+import com.eclipsehotel.reservations.controller.dto.room.RoomDetailResponseDTO;
 
 import java.util.List;
 
