@@ -5,13 +5,13 @@ import com.eclipsehotel.reservations.controller.dto.rooms.RoomsRequestDTO;
 import com.eclipsehotel.reservations.controller.dto.rooms.RoomsUpdateRequestDTO;
 import com.eclipsehotel.reservations.controller.dto.rooms.RoomDetailResponseDTO;
 import com.eclipsehotel.reservations.controller.dto.rooms.RoomsResponseDTO;
+import com.eclipsehotel.reservations.domain.services.IRoomService;
 import com.eclipsehotel.reservations.domain.services.impl.RoomsServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,14 +19,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/rooms")
 public class RoomsController {
 
-    private final RoomsServiceImpl service;
+    private final IRoomService service;
 
     public RoomsController(RoomsServiceImpl service) {
         this.service = service;
     }
 
     @PostMapping("/create")
-    @Transactional
     public ResponseEntity<RoomsResponseDTO> createCustomers(
             @RequestBody @Valid RoomsRequestDTO dto,
             UriComponentsBuilder uriBuilder)
@@ -48,7 +47,6 @@ public class RoomsController {
     }
 
     @PutMapping("/updateRoom/{id}")
-    @Transactional
     public ResponseEntity<RoomsResponseDTO> updateRoom(
             @RequestBody
             @Valid RoomsUpdateRequestDTO dto,
