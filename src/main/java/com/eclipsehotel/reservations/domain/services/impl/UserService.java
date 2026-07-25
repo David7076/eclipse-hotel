@@ -4,8 +4,10 @@ import com.eclipsehotel.reservations.controller.dto.auth.LoginRequestDTO;
 import com.eclipsehotel.reservations.controller.dto.auth.TokenResponseDTO;
 import com.eclipsehotel.reservations.controller.dto.user.UserRequestDTO;
 import com.eclipsehotel.reservations.controller.dto.user.UserResponseDTO;
+import com.eclipsehotel.reservations.domain.mapper.UserMapper;
 import com.eclipsehotel.reservations.domain.models.UserEntity;
 import com.eclipsehotel.reservations.domain.services.IUserService;
+import com.eclipsehotel.reservations.infra.exceptions.ExistingEmailException;
 import com.eclipsehotel.reservations.infra.repository.UserRepository;
 import com.eclipsehotel.reservations.infra.security.service.ITokenService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,14 @@ public class UserService implements IUserService {
 
     @Override
     public UserResponseDTO save(UserRequestDTO request) {
-        return null;
+        UserEntity userEntity = UserMapper.toEntity(request);
+
+        if(userRepository.findByEmail(request.email()).isPresent()) throw new ExistingEmailException(request.email());
+        userEntity.setPassword(passwordEncoder.encode(request.password()));
+        userEntity.setRole(request.role());
+
+        userRepository.save(userEntity);
+        return UserMapper.toDTO(userEntity);
     }
 
     @Override

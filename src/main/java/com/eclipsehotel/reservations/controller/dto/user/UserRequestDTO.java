@@ -1,20 +1,22 @@
 package com.eclipsehotel.reservations.controller.dto.user;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import com.eclipsehotel.reservations.domain.models.enums.Role;
+import jakarta.validation.constraints.*;
 
 public record UserRequestDTO(
-        @Size(max = 50)
-        @NotBlank(message = "Nome é obrigatório!")
-        String name,
 
         @Size(max = 50)
         @Email(message = "E-mail inválido!")
         String email,
 
-
         @NotBlank(message = "Senha é obrigatória!")
-        String password
+        String password,
+
+        @NotBlank(message = "O perfil (role) é obrigatório")
+        @Pattern(
+                regexp = "^(ADMIN|USER|RECEPTIONIST)$",
+                message = "Perfil inválido. Valores aceitos: ADMIN, USER ou RECEPTIONIST"
+        )
+        Role role
 ) {
 }

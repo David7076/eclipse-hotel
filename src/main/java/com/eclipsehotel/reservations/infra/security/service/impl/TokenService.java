@@ -7,12 +7,14 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
+@Service
 public class TokenService implements ITokenService {
 
     @Value("${JWT_SECRET}")
@@ -43,7 +45,8 @@ public class TokenService implements ITokenService {
 
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        return false;
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
 
