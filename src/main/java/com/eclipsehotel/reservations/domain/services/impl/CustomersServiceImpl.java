@@ -16,10 +16,9 @@ import com.eclipsehotel.reservations.domain.mapper.CustomersMapper;
 import com.eclipsehotel.reservations.domain.models.AddressEntity;
 import com.eclipsehotel.reservations.domain.models.CustomersEntity;
 import com.eclipsehotel.reservations.domain.services.ICustomerService;
-import com.eclipsehotel.reservations.infra.exceptions.GlobalExeceptions;
+import com.eclipsehotel.reservations.infra.exceptions.GlobalExeceptionsHandler;
 import com.eclipsehotel.reservations.infra.repository.CustomersRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -42,7 +41,7 @@ public class CustomersServiceImpl implements ICustomerService {
         log.info("Dados retornados da API");
 
         if (responseCep.error() != null && Boolean.TRUE.equals(responseCep.error())) {
-            throw new GlobalExeceptions.CepNotFoundException(dto.zipCode());
+            throw new GlobalExeceptionsHandler.CepNotFoundException(dto.zipCode());
         }
 
         AddressEntity entityAddress = AddressMapper.toEntity(responseCep);
@@ -103,7 +102,7 @@ public class CustomersServiceImpl implements ICustomerService {
             var response = cepService.getCep(dto.zipCode());
 
             if (response.error() != null && Boolean.TRUE.equals(response.error())) {
-                throw new GlobalExeceptions.CepNotFoundException(dto.zipCode());
+                throw new GlobalExeceptionsHandler.CepNotFoundException(dto.zipCode());
             }
 
             address.setZipCode(response.zipCode());

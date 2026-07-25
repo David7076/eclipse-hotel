@@ -1,4 +1,4 @@
-package com.eclipsehotel.reservations.controller.dto.rooms;
+package com.eclipsehotel.reservations.controller.dto.room;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
