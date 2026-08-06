@@ -8,6 +8,13 @@ spring:
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
 
   # Configurações do Hibernate / JPA
   jpa:
@@ -28,3 +35,16 @@ api:
   security:
     token:
       issuer: eclipse-hotel
+
+# Url base do Brasil Api
+brasilapi:
+  cep:
+    base-url: https://brasilapi.com.br/api/cep/v1
+
+# Spring Cloud Feign
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 2000
+        read-timeout: 3000
