@@ -17,8 +17,8 @@ public class AddressEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "zip_code")
-    private String zipCode;
+    @Column(name = "cep")
+    private String cep;
 
     @Column(name = "street")
     private String street;
