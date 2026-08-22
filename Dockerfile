@@ -3,8 +3,9 @@ WORKDIR /opt/app
 COPY . .
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:21-alpine-3.23
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /opt/app
-COPY --from=build /opt/app/target/app.jar /opt/app/app.jar
+COPY --from=build /opt/app/target/*.jar /opt/app/app.jar
 ENV SPRING_PROFILES_ACTIVE=dev
-CMD [ "java", "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", "-jar", "app.jar" ]
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
