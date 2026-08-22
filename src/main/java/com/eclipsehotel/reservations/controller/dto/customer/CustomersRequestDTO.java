@@ -22,7 +22,7 @@ public record CustomersRequestDTO(
          LocalDate create_at,
 
          @NotBlank
-         String zipCode,
+         String cep,
 
          @NotBlank
          String number,

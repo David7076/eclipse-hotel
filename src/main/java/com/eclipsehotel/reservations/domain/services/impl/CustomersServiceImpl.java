@@ -2,6 +2,7 @@ package com.eclipsehotel.reservations.domain.services.impl;
 
 import com.eclipsehotel.reservations.infra.exceptions.EntityNotFoundExcetpion;
 import jakarta.transaction.Transactional;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,14 +22,16 @@ import com.eclipsehotel.reservations.infra.repository.CustomersRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collections;
+
 @Slf4j
 @Service
 public class CustomersServiceImpl implements ICustomerService {
 
     private final CustomersRepository repository;
-    private final ViaCepServiceImpl cepService;
+    private final AddressServiceImpl cepService;
 
-    public CustomersServiceImpl(CustomersRepository repository, ViaCepServiceImpl cepService) {
+    public CustomersServiceImpl(CustomersRepository repository, AddressServiceImpl cepService) {
         this.repository = repository;
         this.cepService = cepService;
     }
@@ -37,12 +40,9 @@ public class CustomersServiceImpl implements ICustomerService {
     @Transactional
     public CustomersResponseDTO saveCustomer(CustomersRequestDTO dto) {
         CustomersEntity entityCustomer = CustomersMapper.toEntity(dto);
-        var responseCep = cepService.getCep(dto.zipCode());
+        var responseCep = cepService.findByCep(dto.cep());
         log.info("Dados retornados da API");
 
-        if (responseCep.error() != null && Boolean.TRUE.equals(responseCep.error())) {
-            throw new GlobalExeceptionsHandler.CepNotFoundException(dto.zipCode());
-        }
 
         AddressEntity entityAddress = AddressMapper.toEntity(responseCep);
         entityAddress.setNumber(dto.number());
@@ -98,14 +98,10 @@ public class CustomersServiceImpl implements ICustomerService {
             entity.setPhone(dto.phone());
         }
         AddressEntity address = new AddressEntity();
-        if (!dto.zipCode().equals(entity.getAddress().getZipCode())) {
-            var response = cepService.getCep(dto.zipCode());
+        if (!StringUtils.isEmpty(dto.cep()) || !dto.cep().equals(entity.getAddress().getCep())) {
+            var response = cepService.findByCep(dto.cep());
 
-            if (response.error() != null && Boolean.TRUE.equals(response.error())) {
-                throw new GlobalExeceptionsHandler.CepNotFoundException(dto.zipCode());
-            }
-
-            address.setZipCode(response.zipCode());
+            address.setCep(response.cep());
             address.setNeighborhood(response.neighborhood());
             address.setStreet(response.street());
             address.setState(response.state());

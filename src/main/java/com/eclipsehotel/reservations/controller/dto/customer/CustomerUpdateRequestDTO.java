@@ -4,7 +4,7 @@ public record CustomerUpdateRequestDTO(
         String name,
         String email,
         String phone,
-        String zipCode,
+        String cep,
         String number,
         String addressDetails
 
