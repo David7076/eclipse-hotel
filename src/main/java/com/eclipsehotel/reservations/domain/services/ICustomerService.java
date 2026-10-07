@@ -1,23 +1,20 @@
 package com.eclipsehotel.reservations.domain.services;
 
+import com.eclipsehotel.reservations.domain.models.CustomersEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import com.eclipsehotel.reservations.controller.dto.customer.CustomerResponseDetailDTO;
 import com.eclipsehotel.reservations.controller.dto.customer.CustomerUpdateRequestDTO;
 import com.eclipsehotel.reservations.controller.dto.customer.CustomersRequestDTO;
-import com.eclipsehotel.reservations.controller.dto.customer.CustomersResponseDTO;
 
 public interface ICustomerService {
 
-    CustomersResponseDTO saveCustomer(CustomersRequestDTO dto);
+    CustomersEntity saveCustomer(CustomersRequestDTO dto);
 
-    Page<CustomersResponseDTO> listAllCustomers(Pageable pagination);
+    Page<CustomersEntity> listAllCustomers(Pageable pagination);
 
-    CustomerResponseDetailDTO getByIdCustomer(Long id);
+    CustomersEntity getByIdCustomer(Long id);
 
-    CustomersResponseDTO update(CustomerUpdateRequestDTO dto, Long id);
+    CustomersEntity update(CustomerUpdateRequestDTO dto, Long id);
 
     void delete(Long id);
 
