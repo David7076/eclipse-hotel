@@ -3,8 +3,8 @@ package com.eclipsehotel.reservations.controller;
 
 import com.eclipsehotel.reservations.controller.dto.room.RoomsRequestDTO;
 import com.eclipsehotel.reservations.controller.dto.room.RoomsUpdateRequestDTO;
-import com.eclipsehotel.reservations.controller.dto.room.RoomDetailResponseDTO;
 import com.eclipsehotel.reservations.controller.dto.room.RoomsResponseDTO;
+import com.eclipsehotel.reservations.domain.mapper.RoomsMapper;
 import com.eclipsehotel.reservations.domain.services.IRoomService;
 import com.eclipsehotel.reservations.domain.services.impl.RoomsServiceImpl;
 import jakarta.validation.Valid;
@@ -31,19 +31,20 @@ public class RoomsController {
             UriComponentsBuilder uriBuilder)
     {
         var response = service.saveRoom(dto);
-        var uri = uriBuilder.path("/rooms/{id}").buildAndExpand(response.id()).toUri();
-        return ResponseEntity.created(uri).body(response);
+        var uri = uriBuilder.path("/rooms/{id}").buildAndExpand(response.getId()).toUri();
+        return ResponseEntity.created(uri).body(RoomsMapper.toDTO(response));
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<Page<RoomsResponseDTO>> getAllRooms(@PageableDefault Pageable pagination) {
         var page = service.listAllRooms(pagination);
-        return ResponseEntity.ok(page);
+        return ResponseEntity.ok(page.map(RoomsResponseDTO::new));
     }
 
     @GetMapping("/getRoom/{id}")
-    public ResponseEntity<RoomDetailResponseDTO> getByIdRoom(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getByIdRoom(id));
+    public ResponseEntity<RoomsResponseDTO> getByIdRoom(@PathVariable Long id) {
+        var room = service.getByIdRoom(id);
+        return ResponseEntity.ok(RoomsMapper.toDTO(room));
     }
 
     @PutMapping("/updateRoom/{id}")
@@ -51,7 +52,8 @@ public class RoomsController {
             @RequestBody
             @Valid RoomsUpdateRequestDTO dto,
             @PathVariable Long id) {
-        return ResponseEntity.ok(service.update(dto, id));
+        var roomUpdated = service.update(dto, id);
+        return ResponseEntity.ok(RoomsMapper.toDTO(roomUpdated));
     }
 
     @DeleteMapping("/delete/{id}")

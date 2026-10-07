@@ -8,10 +8,10 @@ import com.eclipsehotel.reservations.controller.dto.room.RoomDetailResponseDTO;
 import com.eclipsehotel.reservations.domain.models.ReservationsEntity;
 import com.eclipsehotel.reservations.domain.models.enums.ReservationStatus;
 import com.eclipsehotel.reservations.domain.mapper.ReservationMapper;
+import com.eclipsehotel.reservations.domain.services.ICustomerService;
 import com.eclipsehotel.reservations.domain.services.IReservationService;
-import com.eclipsehotel.reservations.infra.repository.CustomersRepository;
+import com.eclipsehotel.reservations.domain.services.IRoomService;
 import com.eclipsehotel.reservations.infra.repository.ReservationRepository;
-import com.eclipsehotel.reservations.infra.repository.RoomsRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +24,13 @@ import java.util.List;
 public class ReservationServiceImpl implements IReservationService {
 
     private final ReservationRepository repository;
-    private final CustomersRepository customersRepository;
-    private final RoomsRepository roomsRepository;
+    private final ICustomerService customerService;
+    private final IRoomService roomService;
 
-    public ReservationServiceImpl(ReservationRepository repository, CustomersRepository customersRepository, RoomsRepository roomsRepository) {
+    public ReservationServiceImpl(ReservationRepository repository, ICustomerService customerService, IRoomService roomsService) {
         this.repository = repository;
-        this.customersRepository = customersRepository;
-        this.roomsRepository = roomsRepository;
+        this.customerService = customerService;
+        this.roomService = roomsService;
     }
 
     @Override
@@ -39,11 +39,9 @@ public class ReservationServiceImpl implements IReservationService {
         if (dto.checkin().isAfter(dto.checkout()) || dto.checkin().isEqual(dto.checkout()))
             throw new IllegalArgumentException("A data de check-in deve ser anterior à data de check-out.");
 
-        var customer = customersRepository.findById(dto.customers().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado! "));
+        var customer = customerService.getByIdCustomer(dto.customers().getId());
 
-        var room = roomsRepository.findById(dto.rooms().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Quarto não encontrado! "));
+        var room = roomService.getByIdRoom(dto.rooms().getId());
 
         var conflicts = repository.findConflictingReservations(
                 dto.customers().getId(),
