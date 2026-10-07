@@ -1,5 +1,6 @@
 package com.eclipsehotel.reservations.controller;
 
+import com.eclipsehotel.reservations.domain.mapper.CustomersMapper;
 import com.eclipsehotel.reservations.domain.services.ICustomerService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import com.eclipsehotel.reservations.controller.dto.customer.CustomerResponseDetailDTO;
 import com.eclipsehotel.reservations.controller.dto.customer.CustomerUpdateRequestDTO;
 import com.eclipsehotel.reservations.controller.dto.customer.CustomersRequestDTO;
 import com.eclipsehotel.reservations.controller.dto.customer.CustomersResponseDTO;
@@ -37,20 +36,21 @@ public class CustomersController {
     public ResponseEntity<CustomersResponseDTO> createCustomers(
             @RequestBody @Valid CustomersRequestDTO dto,
             UriComponentsBuilder uriBuilder) {
-        var response = service.saveCustomer(dto);
-        var uri = uriBuilder.path("/customers/{id}").buildAndExpand(response.id()).toUri();
-        return ResponseEntity.created(uri).body(response);
+        var entity = service.saveCustomer(dto);
+        var uri = uriBuilder.path("/customers/{id}").buildAndExpand(entity.getId()).toUri();
+        return ResponseEntity.created(uri).body(CustomersMapper.toDTO(entity));
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<Page<CustomersResponseDTO>> getAllCustomers(@PageableDefault Pageable pagination) {
         var page = service.listAllCustomers(pagination);
-        return ResponseEntity.ok(page);
+        return ResponseEntity.ok(page.map(CustomersResponseDTO::new));
     }
 
     @GetMapping("/getCustomer/{id}")
-    public ResponseEntity<CustomerResponseDetailDTO> getByIdCustomer(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getByIdCustomer(id));
+    public ResponseEntity<CustomersResponseDTO> getByIdCustomer(@PathVariable Long id) {
+        var customer = service.getByIdCustomer(id);
+        return ResponseEntity.ok(CustomersMapper.toDTO(customer));
     }
 
     @PutMapping("/updateCustomer/{id}")
@@ -58,8 +58,8 @@ public class CustomersController {
             @RequestBody
             @PathVariable Long id,
             @Valid CustomerUpdateRequestDTO dto) {
-        CustomersResponseDTO response = service.update(dto, id);
-        return ResponseEntity.ok(response);
+        var customerUpdated = service.update(dto, id);
+        return ResponseEntity.ok(CustomersMapper.toDTO(customerUpdated));
     }
 
     @DeleteMapping("/delete/{id}")
